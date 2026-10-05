@@ -1,0 +1,4 @@
+import React from 'react';import {createRoot} from 'react-dom/client';import {ConvexReactClient} from 'convex/react';import {ConvexAuthProvider} from '@convex-dev/auth/react';import App from './App';import './styles.css';
+const url=import.meta.env.VITE_CONVEX_URL;if(!url)throw Error('Missing Convex URL');const client=new ConvexReactClient(url);
+class Boundary extends React.Component<{children:React.ReactNode},{failed:boolean}>{state={failed:false};static getDerivedStateFromError(){return {failed:true};}render(){return this.state.failed?<main className="fatal"><h1>Something interrupted Bookey.</h1><p>Your saved projects are safe. Refresh to try again.</p><button onClick={()=>location.reload()}>Refresh</button></main>:this.props.children;}}
+createRoot(document.getElementById('root')!).render(<React.StrictMode><Boundary><ConvexAuthProvider client={client}><App/></ConvexAuthProvider></Boundary></React.StrictMode>);
